@@ -62,22 +62,22 @@ const reqList = new SharedArray('requestjsons', function () {
 //   ],
 // };
 
-// export const options = {
-//   thresholds: {
-//     http_req_failed: ['rate<0.01'], // http errors should be less than 1%
-//     http_req_duration: ['p(95)<200'], // 95% of requests should be below 200ms
-//   },
-//   scenarios: {
-//     my_scenario1: {
-//       executor: 'constant-arrival-rate',
-//       duration: '2m', // total duration
-//       preAllocatedVUs: 1, // to allocate runtime resources     preAll
+export const options = {
+  thresholds: {
+    http_req_failed: ['rate<0.01'], // http errors should be less than 1%
+    http_req_duration: ['p(95)<200'], // 95% of requests should be below 200ms
+  },
+  scenarios: {
+    my_scenario1: {
+      executor: 'constant-arrival-rate',
+      duration: '10s', // total duration
+      preAllocatedVUs: 210, // to allocate runtime resources     preAll
 
-//       rate: 1, // number of constant iterations given `timeUnit`
-//       timeUnit: '1s',
-//     },
-//   },
-// };
+      rate: 200, // number of constant iterations given `timeUnit`
+      timeUnit: '1s',
+    },
+  },
+};
 
 export default function () {
   const req0 = {
@@ -90,11 +90,13 @@ export default function () {
     },
   };
   console.log("executed :");
-  console.log(JSON.parse(payloads[0]).name);
-  http.get(url0);
-  const res = http.put(url, payloads[0], params);
+  const i = Math.round(Math.random() * 9);
+
+  console.log(JSON.parse(payloads[i]).name);
+  // http.get(url0);
+  const res = http.put(url, payloads[i], params);
   check(res, { 'status was 200': (r) => r.status == 200 });
   console.log("node: "+JSON.parse(res.body).node);
-  sleep(Math.random() * 2);
+  // sleep(Math.random() * 2);
 }
 

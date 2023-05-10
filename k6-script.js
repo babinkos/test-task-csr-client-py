@@ -6,7 +6,7 @@ import { tagWithCurrentStageIndex } from 'https://jslib.k6.io/k6-utils/1.3.0/ind
 
 // curl -v -X PUT -H "Content-Type: application/json" 'http://127.0.0.1:8000/cert/sign' -d '{"name":"test1","csr":"none"}'
 const urlHealthz = 'http://127.0.0.1:8080/healthz';
-const url = 'http://127.0.0.1:8080/cert/sign';
+const url = 'https://geotest.babinkos.de/cert/sign';
 const maxUsers = 10;
 
 const binFiles = new SharedArray('csrs', function () {
@@ -106,7 +106,7 @@ export default function () {
     },
   };
   const i = Math.round(Math.random() * (maxUsers -1));
-
+  // console.log(payloads[i])
   const res = http.put(url, payloads[i], params);
   check(res, { 'status was 200': (r) => r.status == 200 });
   var duration = res.headers['X-Process-Time-Seconds']

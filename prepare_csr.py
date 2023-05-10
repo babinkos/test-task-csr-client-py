@@ -9,7 +9,7 @@ def create_csr(user_name):
     # Generate our key
     key = rsa.generate_private_key(
         public_exponent=65537,
-        key_size=8192,
+        key_size=4096,
     )
     # Write our key to disk for safe keeping
     with open(f"./certs/key_{user_name}.pem", "wb") as f:
@@ -44,7 +44,7 @@ def create_csr(user_name):
             critical=False,
             # Sign the CSR with our private key.
         )
-        .sign(key, hashes.SHA256())
+        .sign(key, hashes.SHA512())
     )
     # Write our CSR out to disk.
     with open(f"./certs/csr_{user_name}.pem", "wb") as f:
